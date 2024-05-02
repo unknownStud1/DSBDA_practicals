@@ -1,0 +1,234 @@
+PRACTICAL NO : 01 
+df=pd.read_csv(r'E:\DSBDA\DSBDA Datasets\iris.csv')
+print(df)
+df.head(n=5)
+df.tail(n=6)
+df.index
+df.columns
+df.columns.values
+df.shape
+df.dtypes
+df.loc[:,['petal_length','petal_width']]
+df.sort_index(axis=1,ascending=False)
+df.sort_values(by='petal_width')
+df[0:3]
+df.iloc[:,:4]
+df.iloc[5]
+df.iloc[:5,:4]
+df.describe(include='all')
+df.isnull().any()
+df.isnull()
+df.isnull().sum()
+df.isnull().sum().sum()
+df.groupby(['petal_length'])['petal_width'].apply(lambda x:x.isnull())
+
+df['petal_width'].unique()
+df['petal_length']=df['petal_length'].astype('int')
+df.dtypes
+
+import pandas and sklearn library for preprocessing
+from sklearn import preprocessing
+min_max_scaler=preprocessing.MinMaxScaler()
+x=df.iloc[:,:4]
+x_scaled=min_max_scaler.fit_transform(x)
+df_normalized=pd.DataFrame(x_scaled)
+df_normalized
+
+df['species'].unique()
+label_encoder=preprocessing.LabelEncoder()
+df['species']=label_encoder.fit_transform(df['species'])
+df['species'].unique()
+
+PRACTICAL NO : 02
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+df= pd.read_csv(r'C:\Users\Dell\Desktop\Student Information.csv')
+display(df)
+
+#isnull
+#df.isnull()
+# data = pd.isnull(df['Math Score'])
+# display(data)
+
+#notnull
+#df.notnull()
+# data = pd.notnull(df['Math Score'])
+# display(data)
+
+#fillna
+#df.fillna(1)
+
+#replace
+#df.replace(to_replace=np.nan,value=-99)
+
+#dropna
+#df.dropna()
+#df.dropna(axis = 1)
+#df.dropna(axis=0)
+
+#Detecting outlier using Boxplot
+# col=['Math Score','Reading Score','Writing Score','Placement Score']
+# df.boxplot(col)
+# print(np.where(df['Math Score']>90))
+# print(np.where(df['Reading Score']<25))
+# print(np.where(df['Writing Score']<30))
+
+#Detecting outlier using Scatterplot
+# fig, ax=plt.subplots(figsize=(18,10))
+# ax.scatter(df['Placement Score'],df['Placement offer count'])
+# ax.set_xlabel('Placement Score')
+# ax.set_ylabel('Placement offer count')
+# ax.set_title('Scatter Plot')
+# plt.show()
+
+#Detecting outlier using Z-score
+# z=np.abs(stats.zscore(df['Math Score'])) 
+# print(z)
+# threshold = 0.18
+# sample_outliers = np.where(z<threshold)
+# print(sample_outliers)
+
+#Histogram
+# df['Math Score'].plot(kind='hist')
+# df['log_math'] = np.log10(df['Math Score'])
+# df['log_math'].plot(kind='hist')
+
+PRACTICAL NO : 03
+mport pandas as pd 
+import numpy as np 
+import matplotlib.pyplot as plt 
+from scipy import stats 
+from sklearn import preprocessing
+
+df=pd.read_csv(r"E:\DSBDA\DSBDA Datasets\cal_cities_lat_long.csv")
+print(df)
+
+df.mean()
+df.loc[:,'Latitude'].mean()
+df.mean(axis=1)[0:4]
+
+df.median()
+df.loc[:,'Longitude'].median()
+df.median(axis=1)[0:4]
+
+df.mode()
+df.loc[:,'Latitude'].mode()
+
+df.min()
+df.loc[:,'Latitude'].min(skipna=False)
+
+df.max()
+df.loc[:,'Longitude'].max(skipna=False)
+
+df.std()
+df.loc[:,'Latitude'].std()
+
+df.groupby(['Latitude'])('Longitude').mean()
+enc=preprocessing.OneHotEncoder()
+enc_df=pd.DataFrame(enc.fit_transform(df[['Latitude']]).toarray())
+enc_df
+df_encode=df.join(enc_df)
+df_encode
+
+PRACTICAL NO : 04
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt 
+
+data=pd.read_csv(r"E:\DSBDA\DSBDA Datasets\housing.csv")
+print(data)
+
+x=np.array([95,85,80,70,60])
+y=np.array([85,95,70,65,70])
+model=np.polyfit(x, y, 1)
+model
+predict=np.poly1d(model)
+y_pred=predict(x)
+y_pred
+
+from sklearn.metrics import r2_score
+r2_score( y,y_pred)
+
+y_line=model[1]+model[0]*x
+plt.plot(x,y_line,c='r')
+plt.scatter(x, y_pred)
+plt.scatter(x, y, c='r')
+
+from sklearn.datasets import fetch_california_housing
+housing=fetch_california_housing()
+data=pd.DataFrame(housing.data)
+data.columns=housing.feature_names
+data.head()
+data['PRICE']=housing.target
+data.isnull().sum()
+x=data.drop(['PRICE'],axis=1)
+y=data['PRICE']
+
+from sklearn.model_selection import train_test_split
+xtrain,xtest,ytrain,ytest=train_test_split(x,y,test_size=0.2,random_state=0)
+
+from sklearn.linear_model import LinearRegression
+lm=LinearRegression()
+model=lm.fit(xtrain,ytrain)
+
+ytrain_pred=lm.predict(xtrain)
+ytest_pred=lm.predict(xtest)
+
+df=pd.DataFrame(ytrain_pred,ytrain)
+df=pd.DataFrame(ytest_pred,ytest)
+
+from sklearn.metrics import mean_squared_error,r2_score
+mse=mean_squared_error(ytest,ytest_pred)
+print(mse)
+mse=mean_squared_error(ytrain_pred,ytrain)
+print(mse)
+mse=mean_squared_error(ytest,ytest_pred)
+print(mse)
+
+import matplotlib.pyplot as plt
+plt.scatter(ytrain,ytrain_pred,c='blue',marker='o',label='Trainig Data')
+plt.scatter(ytest,ytest_pred,c='lightgreen',marker='s',label='Testing Data')
+plt.xlabel('True Values')
+plt.ylabel('Predicted')
+plt.title('True Values Vs Predited Values')
+plt.legend(loc='upper left')
+#plt.hlines(y=0,xmin=0,xmax=50)
+plt.plot()
+plt.show()
+
+PRACTICAL NO : 05
+import pandas as pd 
+df=pd.read_csv(r"E:\DSBDA\DSBDA Datasets\Social_Network_Ads.csv")
+print(df)
+df['Gender']
+df.isnull()
+df.dtypes
+df['Gender']=df['Gender'].map({'Male':1,'Female':0})
+df['Gender']
+
+x=df.drop(['Age'],axis=1)
+y=df['Age']
+
+from sklearn.model_selection import train_test_split
+xtrain,xtest,ytrain,ytest=train_test_split(x,y,test_size=0.25,random_state=0)
+
+from sklearn.preprocessing import StandardScaler
+st_x=StandardScaler()
+xtrain=st_x.fit_transform(xtrain)
+xtest=st_x.transform(xtest)
+
+from sklearn.linear_model import LogisticRegression
+classifier=LogisticRegression(random_state=0)
+classifier.fit(xtrain,ytrain)
+
+y_pred=classifier.predict(xtest)
+y_pred
+
+from sklearn.metrics import confusion_matrix
+cm=confusion_matrix(ytest,y_pred)
+cm 
+
+

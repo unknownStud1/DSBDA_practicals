@@ -1,0 +1,108 @@
+PRACTICAL NO:06  
+import pandas as pd 
+import numpy as np 
+import matplotlib.pyplot as plt
+df=pd.read_csv(r"E:\DSBDA\DSBDA Datasets\iris.csv")
+print(df)
+
+x=df.iloc[:,:4].values
+y=df['species'].values
+df.head(5)
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2)
+
+from sklearn.preprocessing import StandardScaler
+sc=StandardScaler()
+x_train=sc.fit_transform(x_train)
+x_test=sc.transform(x_test)
+
+from sklearn.naive_bayes import GaussianNB
+classifier=GaussianNB()
+classifier.fit(x_train, y_train)
+
+y_pred=classifier.predict(x_test)
+y_pred
+
+from sklearn.metrics import confusion_matrix
+cm=confusion_matrix(y_test,y_pred)
+
+from sklearn.metrics import accuracy_score
+print("Accuracy :",accuracy_score(y_test,y_pred))
+data=pd.DataFrame({'True values ':y_test , 'Predicted values ':y_pred})
+print(data)
+
+PRACTICAL NO :08
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+dataset=sns.load_dataset('titanic')
+print(dataset)
+dataset.head(5)
+
+import seaborn as sns
+sns.distplot(x=dataset['age'],bins=10)
+
+sns.distplot(x=dataset['age'],bins=10,kde=False)
+
+import seaborn as sns
+sns.jointplot(x=dataset['age'],y=dataset['fare'],kind='scatter')
+sns.jointplot(x=dataset['age'],y=dataset['fare'],kind='hex')
+
+sns.rugplot(dataset['fare'])
+sns.barplot(x='sex',y='age',data=dataset)
+
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.barplot(x='sex',y='age',data=dataset,estimator=np.std)
+sns.countplot(x='sex',data=dataset)
+
+sns.boxplot(x='sex',y='age',data=dataset)
+sns.boxplot(x='sex',y='age',data=dataset,hue='survived')
+
+sns.violinplot(x='sex',y='age',data=dataset)
+sns.violinplot(x='sex',y='age',data=dataset,hue='survived')
+
+sns.stripplot(x='sex',y='age',data=dataset,jitter=False)
+sns.stripplot(x='sex',y='age',data=dataset,jitter=True)
+sns.stripplot(x='sex',y='age',data=dataset,jitter=True,hue='survived')
+
+sns.swarmplot(x='sex',y='age',data=dataset)
+sns.swarmplot(x='sex',y='age',data=dataset,hue='survived')
+
+
+import seaborn as sns
+dataset=sns.load_dataset('titanic')
+dataset.head(5)
+sns.histplot(dataset['fare'],kde=False,bins=10)
+
+PRACTICAL NO : 09
+import pandas as pd
+import seaborn as sns
+dataset=sns.load_dataset('titanic')
+dataset.head(5)
+
+sns.boxplot(x='sex',y='age',data=dataset)
+
+sns.boxplot(x='sex',y='age',data=dataset,hue='survived')
+
+PRACTICAL NO : 10
+import seaborn as sns 
+dataset=sns.load_dataset('iris')
+dataset.head()
+
+import matplotlib.pyplot as plt
+#fig,axes=plt.subplots(2,2,figsize=(16,9))
+sns.histplot(dataset['sepal_length'])
+sns.histplot(dataset['sepal_width'])
+sns.histplot(dataset['petal_length'])
+sns.histplot(dataset['petal_width'])
+
+import matplotlib.pyplot as plt 
+#fig,axes=plt.subplots(2,2,figsize=(16,9))
+sns.boxplot(y='sepal_length',x='species',data=dataset)
+sns.boxplot(y='sepal_width',x='species',data=dataset)
+sns.boxplot(y='petal_length',x='species',data=dataset)
+sns.boxplot(y='petal_width',x='species',data=dataset)
