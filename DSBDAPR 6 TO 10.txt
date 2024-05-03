@@ -32,6 +32,75 @@ print("Accuracy :",accuracy_score(y_test,y_pred))
 data=pd.DataFrame({'True values ':y_test , 'Predicted values ':y_pred})
 print(data)
 
+PRACTICAL NO: 07
+#Loading N
+import nltk
+nltk.download('punkt’)
+
+
+#Tokenization :
+#Sentence tokenization
+from nltk.tokenize import sent_tokenize
+text = "dummy paragraph"
+tokenized_text=sent_tokenize(text)
+print(tokenized_text)
+
+#word tokenization
+from nltk.tokenize import word_tokenize
+tokenized_word=word_tokenize(text)
+print(tokenized_word)
+
+#Freq distribution
+from nltk.probability import FreqDist
+fdist = FreqDist(tokenized_word)
+print(fdist)
+
+##Frequency Distribution Plot
+import matplotlib.pyplot as plt
+fdist.plot(30,cumulative=False)
+plt.show()
+
+#POS tagging
+
+sent = "Albert Einstein was born in Ulm, Germany in 1879."
+tokens=nltk.word_tokenize(sent)
+print(tokens)
+
+nltk.download('averaged_perceptron_tagger')
+nltk.pos_tag(tokens)
+
+#Stop words
+from nltk.corpus import stopwords
+stop_words=set(stopwords.words("english")) print(stop_words)
+
+#removing stop words
+filtered_sent=[]
+for w in tokenized_sent:
+if w not in stop_words:
+filtered_sent.append(w)
+print("Tokenized Sentence:",tokenized_sent)
+print("Filterd Sentence:",filtered_sent)
+
+#Stemming 
+# Stemming
+from nltk.stem import PorterStemmer
+from nltk.tokenize import sent_tokenize, word_tokenize
+ps = PorterStemmer()
+stemmed_words=[]
+for w in filtered_sent:
+stemmed_words.append(ps.stem(w))
+print("Filtered Sentence:",filtered_sent)
+print("Stemmed Sentence:",stemmed_words)
+
+#Lexicon Normalization
+#performing stemming and Lemmatization
+from nltk.stem.wordnet import WordNetLemmatizer
+lem = WordNetLemmatizer()
+from nltk.stem.porter import PorterStemmer
+stem = PorterStemmer()
+word = "flying"
+print("Lemmatized Word:",lem.lemmatize(word,"v")) print("Stemmed Word:",stem.stem(word))
+
 PRACTICAL NO :08
 import pandas as pd
 import numpy as np
