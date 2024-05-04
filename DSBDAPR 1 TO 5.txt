@@ -91,12 +91,45 @@ display(df)
 # sample_outliers = np.where(z<threshold)
 # print(sample_outliers)
 
+
+#handling outlier
+
+#Quantile based flooring and capping:
+
+df=pd.read_csv("/demo.csv")
+df_stud=df
+ninetieth_percentile = np.percentile(df_stud['math score'], 90)
+b = np.where(df_stud['math score']>ninetieth_percentile, ninetieth_percentile, df_stud['math score'])
+print("New array:",b)
+df_stud.insert(1,"m score",b,True) 
+df_stud
+
+#Mean/Median imputation:
+
+col  =  ['reading  score']
+df.boxplot(col)
+
+median=np.median(sorted_rscore) 
+median
+
+refined_df=df
+refined_df['reading score'] = np.where(refined_df['reading
+score'] >upr_bound, median,refined_df['reading score'])
+
+refined_df['reading score'] = np.where(refined_df['reading score'] <lwr_bound, median,refined_df['reading score'])
+
+col = ['reading score'] 
+refined_df.boxplot(col)
+
+
+
 #Histogram
 # df['Math Score'].plot(kind='hist')
 # df['log_math'] = np.log10(df['Math Score'])
 # df['log_math'].plot(kind='hist')
 
 PRACTICAL NO : 03
+
 mport pandas as pd 
 import numpy as np 
 import matplotlib.pyplot as plt 
